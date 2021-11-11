@@ -2,10 +2,10 @@ name: Publish Docker Image
 
 on:
   push:
-    branches: [ php5 ]
+    branches: [ php7 ]
 env:
   IMAGE_NAME: apache
-  VERSION: v5.6
+  VERSION: v7.4
 jobs:
   buildImage:
     name: Build Docker Image
@@ -15,7 +15,7 @@ jobs:
         id: qemu
         uses: docker/setup-qemu-action@master
         with:
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64,linux/ppc64le,linux/s390x
 
       - name: Set up Docker Buildx
         id: buildx
@@ -25,7 +25,8 @@ jobs:
       
       - name: log into GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN}}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+        
 
       - uses: actions/checkout@v2
       - name: Build Container image
-        run: docker buildx build --platform linux/amd64 --tag ghcr.io/deck-app/apache:v5.6 . --push
+        run: docker buildx build --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x --tag ghcr.io/deck-app/apache:v7.4 . --push
