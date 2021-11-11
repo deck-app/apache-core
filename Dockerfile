@@ -97,7 +97,7 @@ RUN sed -i "s#{SERVER_ROOT}#$SERVER_ROOT#g" /etc/apache2/httpd.conf
 
 VOLUME [ "/var/www/" ]
 WORKDIR /var/www
-COPY php_ini/php8.0.ini /etc/php/8.0/php.ini
+COPY php_ini/php.ini /etc/php/8.0/php.ini
 RUN rm -rf /etc/apache2/conf.d/php7-module.conf
 COPY php8-module.conf /etc/apache2/conf.d/php8-module.conf
 
