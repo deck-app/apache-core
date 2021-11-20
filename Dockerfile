@@ -32,6 +32,7 @@ ARG DEPS="\
         php8-mbstring \
         php8-exif \
         php8-ftp \
+        composer \
         php8-openssl \
         php8-zip \
         php8-sysvsem \
@@ -108,7 +109,6 @@ sed -i "s#{DISPLAY}#Off#g" /etc/php8/php.ini \
 ;fi
 
 RUN mv /usr/bin/php8 /usr/bin/php
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN apk add --no-cache openssl openssl-dev
 RUN apk add curl
 RUN apk --update add gcc make g++ zlib-dev
