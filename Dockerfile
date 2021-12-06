@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM alpine:3.12
 LABEL maintainer Naba Das <hello@get-deck.com>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -93,10 +93,6 @@ VOLUME [ "/var/www/" ]
 WORKDIR /var/www
 COPY php_ini/php.ini /etc/php7/php.ini
 
-# Composer install
-RUN apk add curl
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
 ARG DISPLAY_PHPERROR
 RUN if [ ${DISPLAY_PHPERROR} = true ]; then \
 sed -i "s#{DISPLAY}#On#g" /etc/php7/php.ini \
@@ -110,6 +106,12 @@ RUN apk --update add gcc make g++ zlib-dev
 RUN apk add --no-cache gdbm libsasl snappy
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
 RUN apk add php7-pecl-mongodb
+
+# Composer install
+RUN apk add curl
+RUN apk update
+RUN apk upgrade
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 RUN chmod +x /etc/service/apache/run
 RUN chmod +x /sbin/runit-wrapper
