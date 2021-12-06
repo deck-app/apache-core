@@ -61,6 +61,7 @@ ARG DEPS="\
         php7-pdo_sqlite \
         php7-dev \
         php7-pear \
+        php7-gd \
         curl \
         ca-certificates \
         runit \
@@ -108,7 +109,9 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositor
 RUN apk add php7-pecl-mongodb
 
 # Composer install
+RUN apk add --no-cache openssl openssl-dev python2 gcc make zlib-dev gdbm libsasl snappy openrc nano bash g++
 RUN apk add curl
+RUN mv /usr/bin/php7 /usr/bin/php
 RUN apk update
 RUN apk upgrade
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
