@@ -115,6 +115,7 @@ RUN mv /usr/bin/php7 /usr/bin/php
 RUN apk update
 RUN apk upgrade
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN apk add php7-intl
 
 RUN chmod +x /etc/service/apache/run
 RUN chmod +x /sbin/runit-wrapper
