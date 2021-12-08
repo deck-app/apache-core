@@ -115,7 +115,7 @@ RUN apk --update add gcc make g++ zlib-dev
 RUN apk --update add --no-cache gdbm libsasl snappy
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
 RUN apk add --no-cache php8-pecl-mongodb
-
+RUN apk add php8-intl
 RUN apk update
 RUN apk upgrade
 
