@@ -66,10 +66,9 @@ ARG DEPS="\
         ca-certificates \
         runit \
         php7-apache2 \
+        apache2 \
+        apache2-utils \
 "
-
-# PHP.earth Alpine repository for better developer experience
-ADD https://repos.php.earth/alpine/phpearth.rsa.pub /etc/apk/keys/phpearth.rsa.pub
 
 RUN set -x \
     && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
@@ -79,7 +78,7 @@ RUN set -x \
     && ln -sf /dev/stderr /var/log/apache2/error.log
 
 RUN apk add nano
-RUN apk add openrc
+RUN apk add openrc openssh mercurial tzdata openntpd
 RUN apk add --no-cache openssl openssl-dev
 RUN apk add bash
 
