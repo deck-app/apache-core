@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine
 LABEL maintainer Naba Das <hello@get-deck.com>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -20,7 +20,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # Persistent runtime dependencies
 # Add repos
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+# RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing/x86_64/" >> /etc/apk/repositories
 
 # Add basics first
 
@@ -70,14 +70,12 @@ ARG DEPS="\
         curl \
         ca-certificates \
         runit \
+        apache2 \
+        apache2-utils \
 "
 
-
-# PHP.earth Alpine repository for better developer experience
-ADD https://repos.php.earth/alpine/phpearth.rsa.pub /etc/apk/keys/phpearth.rsa.pub
-
 RUN set -x \
-    && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
+    # && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community/x86_64/" >> /etc/apk/repositories \
     && apk add --no-cache $DEPS \
     && mkdir -p /run/apache2 \
     && ln -sf /dev/stdout /var/log/apache2/access.log \
