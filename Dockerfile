@@ -1,6 +1,9 @@
-FROM alpine:3.5
+FROM alpine:3.6
 LABEL maintainer Naba Das <hello@get-deck.com>
 
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.5/main" >> /etc/apk/repositories
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.5/community/" >> /etc/apk/repositories
+RUN apk update
 RUN apk add --update --no-cache bash \
 				curl \
 				curl-dev \
@@ -48,7 +51,6 @@ RUN apk add --update --no-cache bash \
 				php5-pdo_dblib \
 				php5-pgsql \
 				php5-pdo_odbc \
-				php5-xdebug \
 				php5-zip \
 				php5-apache2 \
 				php5-cgi \
@@ -74,12 +76,10 @@ RUN apk add --update --no-cache bash \
 
 RUN apk add --update --no-cache imagemagick-dev \
 				ffmpeg
-#RUN ln -s /usr/bin/php5 /usr/bin/php
-RUN curl -sS https://getcomposer.org/installer | php5 -- --install-dir=/usr/bin --filename=composer 
 
 RUN  rm -rf /var/cache/apk/*
 RUN rm -Rf /var/www/*
-
+RUN ln -s /usr/bin/php5 /usr/bin/php
 # AllowOverride ALL
 RUN sed -i '264s#AllowOverride None#AllowOverride All#' /etc/apache2/httpd.conf
 #Rewrite Moduble Enable
@@ -101,14 +101,20 @@ sed -i "s#{DISPLAY}#Off#g" /etc/php5/php.ini \
 ;fi
 
 RUN rm -Rf /var/www/*
-
+#RUN ln -s /usr/bin/php5 /usr/bin/php
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer 
 ARG SERVER_ROOT
 COPY httpd.conf /etc/apache2/httpd.conf
 ARG SERVER_ROOT
 
+RUN apk --no-cache add ca-certificates wget
+RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-php5-mongo/master/sgerrand.rsa.pub
+RUN wget -q -O /tmp/php5-mongo-1.6.16-r0.apk https://github.com/sgerrand/alpine-pkg-php5-mongo/releases/download/1.6.16-r0/php5-mongo-1.6.16-r0.apk
+RUN cd /tmp/ && apk add --no-cache php5-mongo-1.6.16-r0.apk
+
 RUN sed -i "s#{SERVER_ROOT}#${SERVER_ROOT}#g" /etc/apache2/httpd.conf
 VOLUME [ "/var/www/" ]
-RUN chmod 777 /var/www/
+RUN chown -R apache:apache /var/www/
 WORKDIR /var/www
 
 VOLUME  /var/www
