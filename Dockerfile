@@ -107,11 +107,6 @@ ARG SERVER_ROOT
 COPY httpd.conf /etc/apache2/httpd.conf
 ARG SERVER_ROOT
 
-RUN apk --no-cache add ca-certificates wget
-RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-php5-mongo/master/sgerrand.rsa.pub
-RUN wget -q -O /tmp/php5-mongo-1.6.16-r0.apk https://github.com/sgerrand/alpine-pkg-php5-mongo/releases/download/1.6.16-r0/php5-mongo-1.6.16-r0.apk
-RUN cd /tmp/ && apk add --no-cache php5-mongo-1.6.16-r0.apk
-
 RUN sed -i "s#{SERVER_ROOT}#${SERVER_ROOT}#g" /etc/apache2/httpd.conf
 VOLUME [ "/var/www/" ]
 RUN chown -R apache:apache /var/www/
