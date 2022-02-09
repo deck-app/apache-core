@@ -75,7 +75,7 @@ ARG DEPS="\
 "
 
 RUN set -x \
-    # && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community/x86_64/" >> /etc/apk/repositories \
+    # && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community/x86_64/" >> /etc/apk/repositories \ 
     && apk add --no-cache $DEPS \
     && mkdir -p /run/apache2 \
     && ln -sf /dev/stdout /var/log/apache2/access.log \
