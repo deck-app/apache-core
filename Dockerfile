@@ -77,10 +77,8 @@ RUN set -x \
     && ln -sf /dev/stdout /var/log/apache2/access.log \
     && ln -sf /dev/stderr /var/log/apache2/error.log
 
-RUN apk add nano
-RUN apk add openrc openssh mercurial tzdata openntpd
-RUN apk add --no-cache openssl openssl-dev
-RUN apk add bash
+RUN apk add --no-cache openssl openssl-dev nano openrc openssh mercurial tzdata openntpd git bash
+
 
 COPY apache/ /
 
@@ -108,7 +106,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositor
 RUN apk add php7-pecl-mongodb
 
 # Composer install
-RUN apk add --no-cache openssl openssl-dev python2 gcc make zlib-dev gdbm libsasl snappy openrc nano bash g++
+RUN apk add --no-cache python2 gcc make zlib-dev gdbm libsasl snappy g++
 RUN apk add curl
 RUN mv /usr/bin/php7 /usr/bin/php
 RUN apk update
