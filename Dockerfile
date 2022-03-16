@@ -88,7 +88,7 @@ RUN sed -i 's#\#LoadModule rewrite_module /usr/lib/apache2/mod_rewrite.so#LoadMo
 RUN sed -i 's#/var/www/localhost/htdocs#/var/www#g' /etc/apache2/httpd.conf
 #RUN sed -i /etc/apache2/httpd.conf
 RUN apk update
-RUN apk add --no-cache wget
+RUN apk add --no-cache wget git
 #Start apache
 RUN mkdir -p /run/apache2
 
