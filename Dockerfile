@@ -107,7 +107,7 @@ sed -i "s#{DISPLAY}#Off#g" /etc/php8/php.ini \
 ;fi
 
 RUN mv /usr/bin/php8 /usr/bin/php
-RUN apk add --no-cache openssl openssl-dev
+RUN apk add --no-cache openssl openssl-dev git
 RUN apk add curl
 RUN apk --update add gcc make g++ zlib-dev
 RUN apk --update add --no-cache gdbm libsasl snappy
