@@ -99,7 +99,6 @@ sed -i "s#{DISPLAY}#On#g" /etc/php81/php.ini \
 sed -i "s#{DISPLAY}#Off#g" /etc/php81/php.ini \
 ;fi
 
-RUN mv /usr/bin/php8 /usr/bin/php
 RUN apk add --no-cache openssl openssl-dev curl openrc nano bash icu-libs p7zip gdbm libsasl snappy gcc make g++ zlib-dev php81-zip zip unzip icu-dev php81-pecl-mongodb php81-intl git
 
 RUN ln -s /usr/bin/php81 /usr/bin/php
