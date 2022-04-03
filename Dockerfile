@@ -94,9 +94,9 @@ COPY php_ini/php.ini /etc/php81/php.ini
 
 ARG DISPLAY_PHPERROR
 RUN if [ ${DISPLAY_PHPERROR} = true ]; then \
-sed -i "s#{DISPLAY}#On#g" /etc/php8/php.ini \
+sed -i "s#{DISPLAY}#On#g" /etc/php81/php.ini \
 ;else \
-sed -i "s#{DISPLAY}#Off#g" /etc/php8/php.ini \
+sed -i "s#{DISPLAY}#Off#g" /etc/php81/php.ini \
 ;fi
 
 RUN mv /usr/bin/php8 /usr/bin/php
