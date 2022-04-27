@@ -123,5 +123,4 @@ RUN chmod +x /sbin/runit-wrapper
 RUN chmod +x /sbin/runsvdir-start
 
 EXPOSE 80
-
 CMD ["/sbin/runit-wrapper"]
