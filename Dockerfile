@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.15
 LABEL maintainer Naba Das <hello@get-deck.com>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -98,7 +98,7 @@ sed -i "s#{DISPLAY}#On#g" /etc/php7/php.ini \
 sed -i "s#{DISPLAY}#Off#g" /etc/php7/php.ini \
 ;fi
 
-RUN apk --update add gcc make g++ zlib-dev 
+RUN apk --update add gcc make g++ zlib-dev nodejs npm
 
 # mongodb installation
 RUN apk add --no-cache gdbm libsasl snappy
