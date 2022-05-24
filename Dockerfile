@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.16
 LABEL maintainer Naba Das <hello@get-deck.com>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -109,7 +109,7 @@ sed -i "s#{DISPLAY}#Off#g" /etc/php8/php.ini \
 RUN mv /usr/bin/php8 /usr/bin/php
 RUN apk add --no-cache openssl openssl-dev git
 RUN apk add curl
-RUN apk --update add gcc make g++ zlib-dev
+RUN apk --update add gcc make g++ zlib-dev nodejs npm
 RUN apk --update add --no-cache gdbm libsasl snappy
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
 RUN apk add --no-cache php8-pecl-mongodb
