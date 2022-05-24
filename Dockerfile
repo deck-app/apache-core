@@ -1,4 +1,4 @@
-FROM alpine:edge AS builder
+FROM alpine:3.16 AS builder
 LABEL maintainer Naba Das <hello@get-deck.com>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -74,13 +74,13 @@ ARG DEPS="\
 "
 
 RUN set -x \
-    && echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
+    # && echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
     && apk add --no-cache $DEPS \
     && mkdir -p /run/apache2 \
     && ln -sf /dev/stdout /var/log/apache2/access.log \
     && ln -sf /dev/stderr /var/log/apache2/error.log
 
-RUN apk add --no-cache openrc nano bash icu-libs
+RUN apk add --no-cache openrc nano bash icu-libs nodejs npm
 
 COPY apache/ /
 
