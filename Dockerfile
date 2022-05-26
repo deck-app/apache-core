@@ -98,7 +98,7 @@ sed -i "s#{DISPLAY}#On#g" /etc/php7/php.ini \
 sed -i "s#{DISPLAY}#Off#g" /etc/php7/php.ini \
 ;fi
 
-RUN apk --update add gcc make g++ zlib-dev nodejs npm yarn
+RUN apk --update add gcc make g++ zlib-dev nodejs npm
 
 # mongodb installation
 RUN apk add --no-cache gdbm libsasl snappy
@@ -111,6 +111,7 @@ RUN apk add curl
 RUN mv /usr/bin/php7 /usr/bin/php
 RUN apk update
 RUN apk upgrade
+RUN apk add yarn
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN apk add php7-intl
 
