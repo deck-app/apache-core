@@ -98,7 +98,7 @@ sed -i "s#{DISPLAY}#On#g" /etc/php7/php.ini \
 sed -i "s#{DISPLAY}#Off#g" /etc/php7/php.ini \
 ;fi
 
-RUN apk --update add gcc make g++ zlib-dev nodejs npm
+RUN apk --update add gcc make g++ zlib-dev nodejs npm yarn
 
 # mongodb installation
 RUN apk add --no-cache gdbm libsasl snappy
