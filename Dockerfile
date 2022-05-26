@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3.16 AS builder
 LABEL maintainer Naba Das <hello@get-deck.com>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -94,7 +94,7 @@ ARG SERVER_ROOT
 RUN sed -i "s#{SERVER_ROOT}#$SERVER_ROOT#g" /etc/apache2/httpd.conf
 
 VOLUME [ "/var/www/" ]
-WORKDIR /var/www
+
 COPY php_ini/php.ini /etc/php/8.0/php.ini
 RUN rm -rf /etc/apache2/conf.d/php7-module.conf
 COPY php8-module.conf /etc/apache2/conf.d/php8-module.conf
@@ -118,6 +118,9 @@ RUN ln -s /usr/bin/php /usr/bin/php8
 RUN apk update
 RUN apk upgrade
 
+FROM scratch
+COPY --from=builder / /
+WORKDIR /var/www
 RUN chmod +x /etc/service/apache/run
 RUN chmod +x /sbin/runit-wrapper
 RUN chmod +x /sbin/runsvdir-start
