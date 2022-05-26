@@ -1,4 +1,4 @@
-FROM alpine:3.15
+FROM alpine:3.15 AS builder
 LABEL maintainer Naba Das <hello@get-deck.com>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -88,7 +88,7 @@ ARG SERVER_ROOT
 RUN sed -i "s#{SERVER_ROOT}#$SERVER_ROOT#g" /etc/apache2/httpd.conf
 
 VOLUME [ "/var/www/" ]
-WORKDIR /var/www
+
 COPY php_ini/php.ini /etc/php7/php.ini
 
 ARG DISPLAY_PHPERROR
@@ -115,6 +115,9 @@ RUN apk add yarn
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN apk add php7-intl
 
+FROM scratch
+COPY --from=builder / /
+WORKDIR /var/www
 RUN chmod +x /etc/service/apache/run
 RUN chmod +x /sbin/runit-wrapper
 RUN chmod +x /sbin/runsvdir-start
