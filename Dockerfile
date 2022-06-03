@@ -80,7 +80,7 @@ RUN set -x \
     && ln -sf /dev/stdout /var/log/apache2/access.log \
     && ln -sf /dev/stderr /var/log/apache2/error.log
 
-RUN apk add --no-cache openrc nano bash icu-libs nodejs npm
+RUN apk add --no-cache openrc nano bash icu-libs nodejs npm shadow
 RUN apk add yarn
 
 COPY apache/ /
