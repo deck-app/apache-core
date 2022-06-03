@@ -82,7 +82,7 @@ RUN set -x \
     && ln -sf /dev/stderr /var/log/apache2/error.log
 
 RUN apk add openrc
-RUN apk add nano
+RUN apk add nano shadow
 RUN apk add bash
 RUN apk add icu-libs
 
