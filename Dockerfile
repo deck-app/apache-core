@@ -50,7 +50,6 @@ ARG DEPS="\
         apache2 \
         git \
         apache2-utils \
-	php7-intl \
 	snappy \
         bash \
 "
@@ -61,7 +60,7 @@ RUN set -x \
     && ln -sf /dev/stdout /var/log/apache2/access.log \
     && ln -sf /dev/stderr /var/log/apache2/error.log
 
-RUN apk --update add --no-cache  openrc nano bash icu-libs openssl openssl-dev gcc make g++ zlib-dev gdbm libsasl snappy php7-intl
+RUN apk --update add --no-cache  openrc nano bash icu-libs openssl openssl-dev gcc make g++ zlib-dev gdbm libsasl snappy
 RUN apk upgrade
 COPY apache/ /
 COPY httpd.conf /etc/apache2/httpd.conf
@@ -71,10 +70,11 @@ WORKDIR /var/www
 # RUN ln -s /usr/bin/php7 /usr/bin/php
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer 
 RUN ln -s /etc/php7 /etc/php
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
-RUN apk add icu-libs icu-dev python3 python2 curl git shadow
-RUN apk add --no-cache php7-pecl-mongodb
+# RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories
+# RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
+RUN apk add icu-libs icu-dev python3 python2 curl git --virtual .php-deps --virtual .build-deps $PHPIZE_DEPS zlib-dev icu-dev
+RUN apk add php7-intl
+RUN pecl install mongodb
 
 FROM scratch
 COPY --from=builder / /
