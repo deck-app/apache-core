@@ -28,4 +28,4 @@ jobs:
 
       - uses: actions/checkout@v2
       - name: Build Container image
-        run: docker buildx build --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x --tag ghcr.io/deck-app/apache:v7.3 . --push
+        run: docker buildx build --platform linux/amd64,linux/arm64 --tag ghcr.io/deck-app/apache:v7.3 . --push
