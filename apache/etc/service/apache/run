@@ -1,0 +1,6 @@
+#!/bin/sh
+
+exec 2>&1
+source /env
+rm -f /var/run/apache2/httpd.pid
+exec /usr/sbin/httpd -D FOREGROUND

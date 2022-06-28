@@ -1,0 +1,67 @@
+#User defined
+user:
+  php_version:
+    label:
+      PHP version
+    hint:
+      Select a PHP version from the list above
+    type:
+      select
+    values:
+      - "8.0"
+    target:
+      PHP_VERSION
+
+  php_error_reporting:
+    label:
+      Enable PHP error reporting?
+    type:
+      checkbox
+    hint: Check the box to display PHP errors 
+    target:
+      DISPLAY_PHPERROR
+  php_mongodb_version:
+    label:
+      Update mongodb extension 1.5.3 to 1.9.0(Only php7.1-7.3)?
+    type:
+      checkbox
+    hint: Check the box to update mongodb extension 1.5.3 to 1.9.0
+    target:
+      MONGODB_VERSION
+  # mysql_version:
+  #   label:
+  #     MySQL version
+  #   hint:
+  #     Select MySQL version
+  #   type:
+  #     select
+  #   values:
+  #     - "5.0"
+  #     - "7.0"
+  #   target:
+  #     MYSQL_VERSION
+
+  customize_server_root_path:
+    label:
+      Server root
+    type:
+      input
+    values:
+      /var/www
+    hint:
+      Server document root, make sure to append "/public" if you are going to install a framework like Laravel
+    target:
+      SERVER_ROOT
+
+#System defaults
+system:
+  show_localpath_selector:
+    true
+  #For collecting and storing DB in .env
+  #db/user/password
+  # db_credentials:
+  #   true
+  #Generate public ports for the docker image
+  ports:
+    http:
+      APACHE_HOST_HTTP_PORT
