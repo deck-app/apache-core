@@ -42,6 +42,10 @@ ARG DEPS="\
         php7-pdo_sqlite \
         php7-mysqli \
         php7-mysqlnd \
+	php7-pecl-imagick \
+	php7-pecl-imagick-dev \
+	php7-gd \
+	php7-gettext \
         php7-dev \
         php7-pear \
         curl \
