@@ -1,113 +1,88 @@
-FROM alpine:3.16 AS builder
+FROM alpine:latest AS builder
 LABEL maintainer Naba Das <hello@get-deck.com>
-ARG BUILD_DATE
-ARG VCS_REF
-
-LABEL org.label-schema.build-date=$BUILD_DATE \
-      org.label-schema.vcs-url="https://github.com/deck-app/apache-stack.git" \
-      org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.schema-version="2.0" \
-      org.label-schema.vendor="PHP" \
-      org.label-schema.name="docker-php" \
-      org.label-schema.description="Docker For PHP Developers - Docker image with PHP 8.1.4, Apache, and Alpine" \
-      org.label-schema.url="https://github.com/deck-app/apache-stack"
-
-# PHP_INI_DIR to be symmetrical with official php docker image
-ENV PHP_INI_DIR /etc/php81
-
-# When using Composer, disable the warning about running commands as root/super user
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
-# Persistent runtime dependencies
-# Add repos
-# RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing/x86_64/" >> /etc/apk/repositories
-
 # Add basics first
-
+RUN export DOCKER_BUILDKIT=1
 ARG DEPS="\
-        php81 \
-        php81-phar \
-        php81-bcmath \
-        php81-calendar \
-        php81-mbstring \
-        php81-exif \
-        php81-ftp \
-        php81-openssl \
-        php81-zip \
-        php81-sysvsem \
-        php81-sysvshm \
-        php81-sysvmsg \
-        php81-shmop \
-        php81-sockets \
-        php81-zlib \
-        php81-bz2 \
-        php81-curl \
-        php81-simplexml \
-        php81-xml \
-        php81-opcache \
-        php81-dom \
-        php81-xmlreader \
-        php81-xmlwriter \
-        php81-tokenizer \
-        php81-ctype \
-        php81-session \
-        php81-fileinfo \
-        php81-iconv \
-        php81-json \
-        php81-posix \
-        php81-apache2 \
-        php81-pdo \
-        php81-pdo_dblib \
-        php81-pdo_mysql \
-        php81-pdo_odbc \
-        php81-pdo_pgsql\
-        php81-pdo_sqlite \
-        php81-mysqli \
-        php81-mysqlnd \
-        php81-dev \
-        php81-pear \
+        php82 \
+        php82-phar \
+        php82-bcmath \
+        php82-calendar \
+        php82-mbstring \
+        php82-exif \
+        php82-ftp \
+        # composer \
+        php82-openssl \
+        php82-zip \
+        php82-sysvsem \
+        php82-sysvshm \
+        php82-sysvmsg \
+        php82-shmop \
+        php82-sockets \
+        php82-zlib \
+        php82-bz2 \
+        php82-curl \
+        php82-simplexml \
+        php82-xml \
+        php82-opcache \
+        php82-dom \
+        php82-xmlreader \
+        php82-xmlwriter \
+        php82-tokenizer \
+        php82-ctype \
+        php82-session \
+        php82-fileinfo \
+        php82-iconv \
+        php82-json \
+        php82-posix \
+        php82-apache2 \
+        php82-pdo \
+        php82-pdo_dblib \
+        php82-pdo_mysql \
+        php82-pdo_odbc \
+        php82-pdo_pgsql\
+        php82-pdo_sqlite \
+        php82-mysqli \
+        php82-mysqlnd \
+        php82-dev \
+        php82-pear \
         curl \
         ca-certificates \
         runit \
+	git \
         apache2 \
         apache2-utils \
+	php82-intl \
+	snappy \
+        bash \
 "
 
 RUN set -x \
-    # && echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
+    && echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
     && apk add --no-cache $DEPS \
     && mkdir -p /run/apache2 \
     && ln -sf /dev/stdout /var/log/apache2/access.log \
     && ln -sf /dev/stderr /var/log/apache2/error.log
 
-RUN apk add --no-cache openrc nano bash icu-libs nodejs npm shadow
-RUN apk add yarn
+# RUN apk --update add --no-cache  openrc nano bash icu-libs openssl openssl-dev gcc make g++ zlib-dev gdbm libsasl snappy php82-intl
+# RUN ln -s /usr/bin/php82 /usr/bin/php
+# RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+RUN apk upgrade
 
 COPY apache/ /
-
 COPY httpd.conf /etc/apache2/httpd.conf
 ARG SERVER_ROOT
-
 RUN sed -i "s#{SERVER_ROOT}#$SERVER_ROOT#g" /etc/apache2/httpd.conf
-
+COPY php_ini/php.ini /etc/php82/
 WORKDIR /var/www
-COPY php_ini/php.ini /etc/php81/php.ini
 
-ARG DISPLAY_PHPERROR
-RUN if [ ${DISPLAY_PHPERROR} = true ]; then \
-sed -i "s#{DISPLAY}#On#g" /etc/php81/php.ini \
-;else \
-sed -i "s#{DISPLAY}#Off#g" /etc/php81/php.ini \
-;fi
-
-RUN apk add --no-cache openssl openssl-dev curl openrc nano bash icu-libs p7zip gdbm libsasl snappy gcc make g++ zlib-dev php81-zip zip unzip icu-dev php81-pecl-mongodb php81-intl git
-
-RUN ln -s /usr/bin/php81 /usr/bin/php
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
-RUN apk update
-RUN apk upgrade
+RUN ln -s /usr/bin/php82 /usr/bin/php
+RUN ln -s /etc/php82 /etc/php
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
+RUN apk add --no-cache php82-pecl-mongodb
 FROM scratch
 COPY --from=builder / /
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+RUN apk upgrade
 WORKDIR /var/www
 RUN chmod +x /etc/service/apache/run
 RUN chmod +x /sbin/runit-wrapper
