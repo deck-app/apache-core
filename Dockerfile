@@ -74,7 +74,7 @@ ARG SERVER_ROOT
 RUN sed -i "s#{SERVER_ROOT}#$SERVER_ROOT#g" /etc/apache2/httpd.conf
 COPY php_ini/php.ini /etc/php82/
 WORKDIR /var/www
-
+RUN apk add curl nodejs npm
 RUN ln -s /usr/bin/php82 /usr/bin/php
 RUN ln -s /etc/php82 /etc/php
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
