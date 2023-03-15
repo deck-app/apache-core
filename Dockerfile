@@ -1,4 +1,4 @@
-FROM alpine:3.16 AS builder
+FROM alpine:3.17 AS builder
 LABEL maintainer Naba Das <hello@get-deck.com>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -102,7 +102,7 @@ sed -i "s#{DISPLAY}#Off#g" /etc/php81/php.ini \
 
 RUN apk add --no-cache openssl openssl-dev curl openrc nano bash icu-libs p7zip gdbm libsasl snappy gcc make g++ zlib-dev php81-zip zip unzip icu-dev php81-pecl-mongodb php81-intl git
 
-RUN ln -s /usr/bin/php81 /usr/bin/php
+# RUN ln -s /usr/bin/php81 /usr/bin/php
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 RUN apk update
 RUN apk upgrade
