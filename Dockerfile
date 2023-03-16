@@ -71,7 +71,7 @@ ARG DEPS="\
 "
 
 RUN set -x \
-    && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
+    # && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
     && apk add --no-cache $DEPS \
     && mkdir -p /run/apache2 \
     && ln -sf /dev/stdout /var/log/apache2/access.log \
@@ -98,16 +98,16 @@ sed -i "s#{DISPLAY}#On#g" /etc/php7/php.ini \
 sed -i "s#{DISPLAY}#Off#g" /etc/php7/php.ini \
 ;fi
 
-RUN apk --update add gcc make g++ zlib-dev nodejs npm shadow
+RUN apk --update add gcc make g++ zlib-dev nodejs npm shadow gdbm libsasl snappy php7-pecl-mongodb python2 gcc make zlib-dev gdbm libsasl snappy g++ curl
 
 # mongodb installation
-RUN apk add --no-cache gdbm libsasl snappy
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
-RUN apk add php7-pecl-mongodb
+# RUN apk add --no-cache gdbm libsasl snappy
+# RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories
+# RUN apk add php7-pecl-mongodb
 
 # Composer install
-RUN apk add --no-cache python2 gcc make zlib-dev gdbm libsasl snappy g++
-RUN apk add curl
+# RUN apk add --no-cache python2 gcc make zlib-dev gdbm libsasl snappy g++
+# RUN apk add curl
 RUN mv /usr/bin/php7 /usr/bin/php
 RUN apk update
 RUN apk upgrade
