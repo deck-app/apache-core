@@ -1,4 +1,4 @@
-FROM alpine:3.15 AS builder
+FROM alpine:3.8 AS builder
 LABEL maintainer Naba Das <hello@get-deck.com>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -98,7 +98,7 @@ sed -i "s#{DISPLAY}#On#g" /etc/php7/php.ini \
 sed -i "s#{DISPLAY}#Off#g" /etc/php7/php.ini \
 ;fi
 
-RUN apk --update add gcc make g++ zlib-dev nodejs npm shadow gdbm libsasl snappy php7-pecl-mongodb python2 gcc make zlib-dev gdbm libsasl snappy g++ curl
+RUN apk --update add gcc make g++ zlib-dev nodejs npm shadow gdbm libsasl snappy php7-mongodb python2 gcc make zlib-dev gdbm libsasl snappy g++ curl
 
 # mongodb installation
 # RUN apk add --no-cache gdbm libsasl snappy
@@ -108,7 +108,7 @@ RUN apk --update add gcc make g++ zlib-dev nodejs npm shadow gdbm libsasl snappy
 # Composer install
 # RUN apk add --no-cache python2 gcc make zlib-dev gdbm libsasl snappy g++
 # RUN apk add curl
-RUN mv /usr/bin/php7 /usr/bin/php
+# RUN mv /usr/bin/php7 /usr/bin/php
 RUN apk update
 RUN apk upgrade
 RUN apk add yarn
